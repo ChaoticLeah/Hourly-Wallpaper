@@ -1,3 +1,4 @@
+use serde::Deserialize;
 use strum_macros::EnumString;
 // use WallpaperAPI;
 
@@ -8,7 +9,7 @@ pub struct Resolution {
     pub h: i32,
 }
 
-#[derive(EnumString)]
+#[derive(EnumString, Deserialize, Debug, Copy, Clone)]
 #[strum(ascii_case_insensitive)]
 pub enum Purity {
     Sfw,

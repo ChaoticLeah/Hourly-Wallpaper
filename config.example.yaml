@@ -3,9 +3,9 @@
 #Comment out if you have none, some features wont work though.
 #To get a key go to https://wallhaven.cc and sign up.
 #Then go to https://wallhaven.cc/settings/account and copy the key in
-# apiKey: u7U2BeUbZdaQ6yh6rW5PAZdWbyOUwLCi
-#The options are SFW, SKETCHY, SKETCHY_AND_SFW, NSFW, and ANY. Note: only SFW works without a apiKey
-purity: SFW
+# api_key: u7U2BeUbZdaQ6yh6rW5PAZdWbyOUwLCi
+#The options are Sfw, Sketchy, SketchyAndSfw, Nsfw, and Any. Note: only SFW works without a apiKey
+purity: Sfw
 #Dont set it lower than 2 seconds
 new_picture_delay: 10
 #Format num1 num2, for example : 1920 1080
