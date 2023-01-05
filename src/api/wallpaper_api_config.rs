@@ -7,7 +7,7 @@ pub struct Resolution {
 }
 
 #[derive(EnumString, Deserialize, Debug, Copy, Clone)]
-#[strum(ascii_case_insensitive)]
+// #[strum(ascii_case_insensitive)]
 pub enum Purity {
     Sfw,
     Sketchy,
