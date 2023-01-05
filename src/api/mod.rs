@@ -31,7 +31,6 @@ pub fn get_wallpaper_url(args: wallpaper_api_config::WallpaperAPIConf) -> String
 
     let url = Url::parse_with_params(base_url, url_parrams);
 
-
     return if let Ok(url) = url {
         url.to_string()
     } else {
@@ -61,7 +60,6 @@ pub async fn get_wallpaper_url_from_request_url(request_url: &String) -> Option<
             panic!("Something unexpected happened: {:?}", other);
         }
     };
-
 
     if let Some(wallpaper) = api_response.data.get(0) {
         return Some(wallpaper.to_owned());

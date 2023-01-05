@@ -13,7 +13,7 @@ pub enum Purity {
     Sketchy,
     SketchyAndSfw,
     Nsfw,
-    Any
+    Any,
 }
 pub struct WallpaperAPIConf {
     pub query: String,
@@ -31,7 +31,6 @@ pub struct WallpaperAPIConfBuilder {
     pub api_key: String,
 }
 
-
 impl WallpaperAPIConfBuilder {
     pub fn new() -> WallpaperAPIConfBuilder {
         WallpaperAPIConfBuilder {
@@ -48,11 +47,17 @@ impl WallpaperAPIConfBuilder {
     }
 
     pub fn min_resolution(self, p: Resolution) -> Self {
-        Self { min_resolution: p, ..self }
+        Self {
+            min_resolution: p,
+            ..self
+        }
     }
 
     pub fn categories(self, p: String) -> Self {
-        Self { categories: p, ..self }
+        Self {
+            categories: p,
+            ..self
+        }
     }
 
     pub fn purity(self, p: Purity) -> Self {

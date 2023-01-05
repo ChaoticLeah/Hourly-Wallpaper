@@ -1,7 +1,7 @@
+use reqwest::Client;
+use serde::{Deserialize, Serialize};
 use std::{env, error::Error};
 use tokio::{fs::File, io::AsyncWriteExt};
-use reqwest::Client;
-use serde::{Serialize, Deserialize};
 use wallpaper;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -12,7 +12,7 @@ pub struct Thumb {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-#[serde (rename = "")]
+#[serde(rename = "")]
 pub struct Wallpaper {
     id: String,
     url: String,
@@ -36,37 +36,32 @@ pub struct Wallpaper {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ApiResponse {
-    #[serde (rename = "data")]
-    pub data: Vec<Wallpaper>
+    #[serde(rename = "data")]
+    pub data: Vec<Wallpaper>,
 }
 
-
 impl Wallpaper {
-
-
     pub async fn download_file(&self) -> Result<(), Box<dyn Error>> {
         let client = Client::new();
-        let mut file : File = if let Some(temp_dir) = env::temp_dir().as_os_str().to_str() {
-            File::create(&format!("{}wallpaper.png", temp_dir)).await?
-        }else{
-            return Err("Failed to create file in temp dir".into());
-        };
+
+        let mut wallpaper_path = env::temp_dir();
+        wallpaper_path.push("wallpaper.png");
+        let mut file: File = File::create(wallpaper_path)
+            .await
+            .map_err(|_| "Failed to create file in temp dir")?;
 
         let resp = client.get(&self.path).send().await?;
         let bytes = resp.bytes().await?;
         file.write_all(&bytes).await?;
-        
 
         Ok(())
     }
-    
+
     pub fn set_wallpaper(&self) {
         if let Some(temp_dir) = env::temp_dir().as_os_str().to_str() {
             wallpaper::set_from_path(&format!("{}wallpaper.png", temp_dir)).unwrap();
         }
-        
+
         wallpaper::set_mode(wallpaper::Mode::Crop).unwrap();
     }
-
-
 }
