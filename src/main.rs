@@ -60,10 +60,10 @@ async fn main() {
         panic!("Unable to read config.yaml");
     };
     
-    //For choosing a random query and tags
-    let query = get_random_query(&config);
 
     loop {
+        //For choosing a random query and tags
+        let query = get_random_query(&config);
 
         let purity = api::wallpaper_api_config::Purity::from_str(&config["purity"].as_str().unwrap().to_owned()).unwrap();
         let api_key = if config["apiKey"].is_badvalue() == false {
@@ -73,7 +73,7 @@ async fn main() {
         };
 
         let wallpaper_url = 
-        api::get_wallpaper_url(api::wallpaper_api_config::WallpaperAPIConf::new()
+        api::get_wallpaper_url(api::wallpaper_api_config::WallpaperAPIConfBuilder::new()
         .query(query.query.to_owned())
         .categories(query.categories.to_owned())
         .min_resolution(api::wallpaper_api_config::Resolution {

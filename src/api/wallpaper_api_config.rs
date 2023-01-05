@@ -32,7 +32,8 @@ pub struct WallpaperAPIConfBuilder {
     pub api_key: String,
 }
 
-impl WallpaperAPIConf {
+
+impl WallpaperAPIConfBuilder {
     pub fn new() -> WallpaperAPIConfBuilder {
         WallpaperAPIConfBuilder {
             query: "".to_string(),
@@ -42,9 +43,7 @@ impl WallpaperAPIConf {
             api_key: "".to_string(),
         }
     }
-}
 
-impl WallpaperAPIConfBuilder {
     pub fn query(self, p: String) -> Self {
         return Self { query: p, ..self };
     }
