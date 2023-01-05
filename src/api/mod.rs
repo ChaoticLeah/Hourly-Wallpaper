@@ -7,28 +7,28 @@ pub fn get_wallpaper_url(args: wallpaper_api_config::WallpaperAPIConf) -> String
     let base_url = "https://wallhaven.cc/api/v1/search?";
 
     let purity = match args.purity {
-        wallpaper_api_config::Purity::SFW => "100",
-        wallpaper_api_config::Purity::SKETCHY => "010",
-        wallpaper_api_config::Purity::SKETCHY_AND_SFW => "110",
-        wallpaper_api_config::Purity::NSFW => "001",
-        wallpaper_api_config::Purity::ANY => "111",
+        wallpaper_api_config::Purity::Sfw => "100",
+        wallpaper_api_config::Purity::Sketchy => "010",
+        wallpaper_api_config::Purity::SketchyAndSfw => "110",
+        wallpaper_api_config::Purity::Nsfw => "001",
+        wallpaper_api_config::Purity::Any => "111",
     };
 
-    let mut urlParrams = vec![];
-    urlParrams.push(("q", args.query.as_str()));
+    let mut url_parrams = vec![];
+    url_parrams.push(("q", args.query.as_str()));
     //Make sure that there is something in categories
-    if args.categories != "" {
-        urlParrams.push(("categories", &args.categories));
+    if !args.categories.is_empty() {
+        url_parrams.push(("categories", &args.categories));
     }
-    let resolution = format!("{}x{}", &args.min_resolution.w, &args.min_resolution.h).to_owned();
-    urlParrams.push(("atleast", &resolution));
-    urlParrams.push(("purity", &purity));
-    urlParrams.push(("apikey", &args.api_key));
+    let resolution = format!("{}x{}", &args.min_resolution.w, &args.min_resolution.h);
+    url_parrams.push(("atleast", &resolution));
+    url_parrams.push(("purity", purity));
+    url_parrams.push(("apikey", &args.api_key));
     //Make it random so we dont always get the same wallpaper
 
-    urlParrams.push(("sorting", "random"));
+    url_parrams.push(("sorting", "random"));
 
-    let url = Url::parse_with_params(base_url, urlParrams);
+    let url = Url::parse_with_params(base_url, url_parrams);
 
 
     return if let Ok(url) = url {
@@ -61,9 +61,10 @@ pub async fn get_wallpaper_url_from_request_url(request_url: &String) -> Option<
         }
     };
 
+
     if let Some(wallpaper) = api_response.data.get(0) {
         return Some(wallpaper.to_owned());
     }
 
-    return None;
+    None
 }

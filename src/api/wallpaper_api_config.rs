@@ -9,12 +9,13 @@ pub struct Resolution {
 }
 
 #[derive(EnumString)]
+#[strum(ascii_case_insensitive)]
 pub enum Purity {
-    SFW,
-    SKETCHY,
-    SKETCHY_AND_SFW,
-    NSFW,
-    ANY
+    Sfw,
+    Sketchy,
+    SketchyAndSfw,
+    Nsfw,
+    Any
 }
 pub struct WallpaperAPIConf {
     pub query: String,
@@ -39,29 +40,29 @@ impl WallpaperAPIConfBuilder {
             query: "".to_string(),
             min_resolution: Resolution { w: 1920, h: 1080 },
             categories: "".to_string(),
-            purity: Purity::SFW,
+            purity: Purity::Sfw,
             api_key: "".to_string(),
         }
     }
 
     pub fn query(self, p: String) -> Self {
-        return Self { query: p, ..self };
+        Self { query: p, ..self }
     }
 
     pub fn min_resolution(self, p: Resolution) -> Self {
-        return Self { min_resolution: p, ..self };
+        Self { min_resolution: p, ..self }
     }
 
     pub fn categories(self, p: String) -> Self {
-        return Self { categories: p, ..self };
+        Self { categories: p, ..self }
     }
 
     pub fn purity(self, p: Purity) -> Self {
-        return Self { purity: p, ..self };
+        Self { purity: p, ..self }
     }
 
     pub fn api_key(self, p: String) -> Self {
-        return Self { api_key: p, ..self };
+        Self { api_key: p, ..self }
     }
 
     pub fn build(self) -> WallpaperAPIConf {

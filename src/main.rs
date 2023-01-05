@@ -44,10 +44,10 @@ fn get_random_query(config : &yaml_rust::Yaml) -> Query {
         }
     }
     
-    return Query {
+    Query {
         query: "".to_string(),
         categories: "".to_string(),
-    };
+    }
 }
 
 
@@ -65,8 +65,8 @@ async fn main() {
         //For choosing a random query and tags
         let query = get_random_query(&config);
 
-        let purity = api::wallpaper_api_config::Purity::from_str(&config["purity"].as_str().unwrap().to_owned()).unwrap();
-        let api_key = if config["apiKey"].is_badvalue() == false {
+        let purity = api::wallpaper_api_config::Purity::from_str(config["purity"].as_str().unwrap()).unwrap();
+        let api_key = if !config["apiKey"].is_badvalue() {
             config["apiKey"].as_str().unwrap().to_owned()
         }else{
             "".to_owned()
@@ -84,9 +84,10 @@ async fn main() {
         .purity(purity)
         .build());
 
+
         //Get the wallpaper json and get just the wallpaper element
         let wallpaper = api::get_wallpaper_url_from_request_url(&wallpaper_url).await;
-    
+
         //Make sure it found a wallpaper, download it if it did, then set it
         if let Some(wallpaper) = wallpaper {
             if let Err(err) = wallpaper.download_file().await {
