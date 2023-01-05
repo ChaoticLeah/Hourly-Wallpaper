@@ -1,9 +1,8 @@
 use std::{error::Error, fs};
-
 use rand::seq::SliceRandom;
 use serde::Deserialize;
-
 use crate::{api::Purity};
+
 
 #[derive(Deserialize, Debug, Copy, Clone)]
 pub struct Resolution {

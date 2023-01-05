@@ -1,8 +1,5 @@
 use serde::Deserialize;
 use strum_macros::EnumString;
-// use WallpaperAPI;
-
-// pub mod WallpaperAPIConf {
 
 pub struct Resolution {
     pub w: i32,
@@ -76,4 +73,3 @@ impl WallpaperAPIConfBuilder {
         }
     }
 }
-// }

@@ -1,7 +1,5 @@
 use std::{env, error::Error};
-
-use tokio::fs::File;
-use tokio::io::AsyncWriteExt;
+use tokio::{fs::File, io::AsyncWriteExt};
 use reqwest::Client;
 use serde::{Serialize, Deserialize};
 use wallpaper;
