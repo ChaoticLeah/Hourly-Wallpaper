@@ -2,16 +2,17 @@ use self::wallpaper::Wallpaper;
 use reqwest::Url;
 pub mod wallpaper;
 pub mod wallpaper_api_config;
+pub use self::wallpaper_api_config::Purity;
 
 pub fn get_wallpaper_url(args: wallpaper_api_config::WallpaperAPIConf) -> String {
     let base_url = "https://wallhaven.cc/api/v1/search?";
 
     let purity = match args.purity {
-        wallpaper_api_config::Purity::Sfw => "100",
-        wallpaper_api_config::Purity::Sketchy => "010",
-        wallpaper_api_config::Purity::SketchyAndSfw => "110",
-        wallpaper_api_config::Purity::Nsfw => "001",
-        wallpaper_api_config::Purity::Any => "111",
+        Purity::Sfw => "100",
+        Purity::Sketchy => "010",
+        Purity::SketchyAndSfw => "110",
+        Purity::Nsfw => "001",
+        Purity::Any => "111",
     };
 
     let mut url_parrams = vec![];
