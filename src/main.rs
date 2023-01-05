@@ -1,10 +1,7 @@
-use std::{thread, time::Duration, fs, error::Error};
-use yaml_rust::{YamlLoader};
-use std::str::FromStr;
-use rand::seq::SliceRandom;
+use std::{thread, time::Duration};
 
-use crate::configManager::get_random_query;
-mod configManager;
+use crate::config_manager::get_random_query;
+mod config_manager;
 mod api;
 
 
@@ -56,7 +53,7 @@ mod api;
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
     println!("Running");
-    let config = if let Ok(config) = configManager::load_config().await {
+    let config = if let Ok(config) = config_manager::load_config().await {
         config
     }else{
         panic!("Unable to read config.yaml");

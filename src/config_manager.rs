@@ -44,5 +44,5 @@ pub fn get_random_query(config: &Config) -> Query {
         };
     };
 
-    return rand_query_data.clone();
+    rand_query_data.clone()
 }
