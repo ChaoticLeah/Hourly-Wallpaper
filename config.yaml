@@ -1,0 +1,18 @@
+#Comment out if you have none, some features wont work though.
+#To get a key go to https://wallhaven.cc and sign up.
+#Then go to https://wallhaven.cc/settings/account and copy the key in
+apiKey: u7U2BeUbZdaQ6yh6rW5PAZdWbyOUwLCi
+#The options are SFW, SKETCHY, SKETCHY_AND_SFW, NSFW, and ANY. Note: only SFW works without a apiKey
+purity: SFW
+#Dont set it lower than 2 seconds
+new_picture_delay: 10
+#Format num1 num2, for example : 1920 1080
+min_resolution:
+  w: 1920
+  h: 1080
+#An array of all the possibly querys,
+query_data: 
+  - query: mori calliope
+    categories: 
+  - query: cats
+    categories: 
