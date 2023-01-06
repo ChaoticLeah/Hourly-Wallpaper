@@ -1,7 +1,7 @@
 use crate::api::Purity;
 use rand::seq::SliceRandom;
 use serde::Deserialize;
-use std::{error::Error, fs};
+use std::{error::Error, fs, io};
 
 #[derive(Deserialize, Debug, Copy, Clone)]
 pub struct Resolution {
@@ -27,8 +27,13 @@ pub struct Config {
 }
 
 pub async fn load_config() -> Result<Config, Box<dyn Error>> {
-    let config_file_string = fs::read_to_string("config.yaml")?;
-    let config: Config = serde_yaml::from_str(&config_file_string)?; // you need to add serde_yaml as a dependency
+    let config_file_string = fs::read_to_string("config.yaml").map_err(|_| {
+        io::Error::new(
+            io::ErrorKind::NotFound,
+            "Cannot parse config.yaml. Place it in the same directory as the .exe",
+        )
+    })?;
+    let config: Config = serde_yaml::from_str(&config_file_string)?;
     Ok(config)
 }
 

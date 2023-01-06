@@ -57,11 +57,18 @@ impl Wallpaper {
         Ok(())
     }
 
-    pub fn set_wallpaper(&self) {
-        if let Some(temp_dir) = env::temp_dir().as_os_str().to_str() {
-            wallpaper::set_from_path(&format!("{}wallpaper.png", temp_dir)).unwrap();
-        }
+    // pub fn set_wallpaper(&self) {
+    //     if let Some(temp_dir) = env::temp_dir().as_os_str().to_str() {
+    //         wallpaper::set_from_path(&format!("{}wallpaper.png", temp_dir)).unwrap();
+    //     }
 
-        wallpaper::set_mode(wallpaper::Mode::Crop).unwrap();
+    //     wallpaper::set_mode(wallpaper::Mode::Crop).unwrap();
+    // }
+
+    pub fn set_wallpaper(&self) -> Result<(), Box<dyn Error>> {
+        let wallpaper_path = env::temp_dir().join("wallpaper.png");
+        wallpaper::set_from_path(wallpaper_path.as_os_str().to_str().ok_or("Invalid path")?)?;
+        wallpaper::set_mode(wallpaper::Mode::Crop)?;
+        Ok(())
     }
 }

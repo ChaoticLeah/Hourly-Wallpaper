@@ -1,17 +1,14 @@
-use std::{thread, time::Duration};
+use std::{error::Error, thread, time::Duration};
 
 use crate::config_manager::get_random_query;
 mod api;
 mod config_manager;
 
 #[tokio::main(flavor = "current_thread")]
-async fn main() {
+async fn main() -> Result<(), Box<dyn Error>> {
     println!("Running");
-    let config = if let Ok(config) = config_manager::load_config().await {
-        config
-    } else {
-        panic!("Unable to read config.yaml");
-    };
+
+    let config = config_manager::load_config().await?;
 
     loop {
         //For choosing a random query and tags
@@ -39,7 +36,7 @@ async fn main() {
                 //This can occur if the search query you have returns nothing. Or perhaps if you are unlucky
                 println!("{}", err)
             } else {
-                wallpaper.set_wallpaper();
+                wallpaper.set_wallpaper()?;
             }
         }
 
