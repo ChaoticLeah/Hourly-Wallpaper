@@ -28,10 +28,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
         );
 
         //Get the wallpaper json and get just the wallpaper element
-        let wallpaper = api::get_wallpaper_url_from_request_url(&wallpaper_url).await;
+        let wallpaper = api::get_wallpaper_url_from_request_url(&wallpaper_url?).await;
 
         //Make sure it found a wallpaper, download it if it did, then set it
-        if let Some(wallpaper) = wallpaper {
+        if let Some(wallpaper) = wallpaper? {
             if let Err(err) = wallpaper.download_file().await {
                 //This can occur if the search query you have returns nothing. Or perhaps if you are unlucky
                 println!("{}", err)

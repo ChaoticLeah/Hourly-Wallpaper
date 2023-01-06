@@ -1,10 +1,14 @@
-use self::wallpaper::Wallpaper;
+use self::{status_error::StatusError, wallpaper::Wallpaper};
 use reqwest::Url;
+use std::error::Error;
+pub mod status_error;
 pub mod wallpaper;
 pub mod wallpaper_api_config;
 pub use self::wallpaper_api_config::Purity;
 
-pub fn get_wallpaper_url(args: wallpaper_api_config::WallpaperAPIConf) -> String {
+pub fn get_wallpaper_url(
+    args: wallpaper_api_config::WallpaperAPIConf,
+) -> Result<String, Box<dyn Error>> {
     let base_url = "https://wallhaven.cc/api/v1/search?";
 
     let purity = match args.purity {
@@ -32,13 +36,15 @@ pub fn get_wallpaper_url(args: wallpaper_api_config::WallpaperAPIConf) -> String
     let url = Url::parse_with_params(base_url, url_parrams);
 
     return if let Ok(url) = url {
-        url.to_string()
+        Ok(url.to_string())
     } else {
-        panic!("Cannot construct URL")
+        Err("Cannot construct URL".into())
     };
 }
 
-pub async fn get_wallpaper_url_from_request_url(request_url: &String) -> Option<Wallpaper> {
+pub async fn get_wallpaper_url_from_request_url(
+    request_url: &String,
+) -> Result<Option<Wallpaper>, Box<dyn Error>> {
     let client = reqwest::Client::new();
     let response = client
         .get(request_url)
@@ -50,20 +56,19 @@ pub async fn get_wallpaper_url_from_request_url(request_url: &String) -> Option<
 
     let api_response = match response.status() {
         reqwest::StatusCode::OK => match response.json::<wallpaper::ApiResponse>().await {
-            Ok(resp) => resp,
-            Err(err) => panic!("Cannot parse json: {:?}", err),
+            Ok(resp) => Ok(resp),
+            Err(err) => Err(StatusError::new(&err.to_string())),
         },
-        reqwest::StatusCode::UNAUTHORIZED => {
-            panic!("API key Needed");
-        }
-        other => {
-            panic!("Something unexpected happened: {:?}", other);
-        }
+        reqwest::StatusCode::UNAUTHORIZED => Err(StatusError::new("API key needed")),
+        other => Err(StatusError::new(&format!(
+            "Something unexpected happened: {:?}",
+            other
+        ))),
     };
 
-    if let Some(wallpaper) = api_response.data.get(0) {
-        return Some(wallpaper.to_owned());
+    if let Some(wallpaper) = api_response?.data.get(0) {
+        return Ok(Some(wallpaper.to_owned()));
     }
 
-    None
+    Ok(None)
 }
