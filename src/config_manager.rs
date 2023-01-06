@@ -19,7 +19,7 @@ pub struct Query {
 //#[serde(rename_all="camelCase")] // this could be used if all your keys have the wrong case (from an API for example)
 pub struct Config {
     #[serde(rename = "apiKey")]
-    pub api_key: String,
+    pub api_key: Option<String>,
     pub purity: Purity,           // your enum
     pub new_picture_delay: usize, // you can mark keys as optional using an `Option` if you want
     pub min_resolution: Resolution,

@@ -22,7 +22,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
                     w: config.min_resolution.w as i32,
                     h: config.min_resolution.h as i32,
                 })
-                .api_key(config.api_key.clone())
+                .api_key(config.api_key.clone().unwrap_or_default())
                 .purity(config.purity)
                 .build(),
         );
