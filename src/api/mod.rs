@@ -42,11 +42,11 @@ pub fn get_wallpaper_url(
     }
 
     let url = Url::parse_with_params(base_url, final_url_params);
-    return if let Ok(url) = url {
+    if let Ok(url) = url {
         Ok(url.to_string())
     } else {
         Err("Cannot construct URL".into())
-    };
+    }
 }
 
 pub async fn get_wallpaper_url_from_request_url(

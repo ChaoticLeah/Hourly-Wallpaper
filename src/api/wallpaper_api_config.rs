@@ -67,10 +67,7 @@ impl WallpaperAPIConfBuilder {
     }
 
     pub fn api_key(self, api_key: Option<String>) -> Self {
-        Self {
-            api_key: api_key,
-            ..self
-        }
+        Self { api_key, ..self }
     }
 
     pub fn build(self) -> WallpaperAPIConf {

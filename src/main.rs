@@ -18,11 +18,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
         let query = get_random_query(&config);
         let wallpaper_url = api::get_wallpaper_url(
             WallpaperAPIConfBuilder::new()
-                .query(query.query.to_owned())
+                .query(query.query)
                 .categories(query.categories)
                 .min_resolution(Resolution {
-                    w: config.min_resolution.w as i32,
-                    h: config.min_resolution.h as i32,
+                    w: config.min_resolution.w,
+                    h: config.min_resolution.h,
                 })
                 .api_key(config.api_key.clone())
                 .purity(config.purity)
