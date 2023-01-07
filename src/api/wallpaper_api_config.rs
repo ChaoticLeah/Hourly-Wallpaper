@@ -1,6 +1,7 @@
 use serde::Deserialize;
 use strum_macros::EnumString;
 
+#[derive(Deserialize, Debug, Copy, Clone)]
 pub struct Resolution {
     pub w: i32,
     pub h: i32,
@@ -15,20 +16,21 @@ pub enum Purity {
     Nsfw,
     Any,
 }
+#[derive(Deserialize, Debug)]
 pub struct WallpaperAPIConf {
     pub query: String,
     pub min_resolution: Resolution,
-    pub categories: String,
+    pub categories: Option<String>,
     pub purity: Purity,
-    pub api_key: String,
+    pub api_key: Option<String>,
 }
 
 pub struct WallpaperAPIConfBuilder {
     pub query: String,
     pub min_resolution: Resolution,
-    pub categories: String,
+    pub categories: Option<String>,
     pub purity: Purity,
-    pub api_key: String,
+    pub api_key: Option<String>,
 }
 
 impl WallpaperAPIConfBuilder {
@@ -36,9 +38,9 @@ impl WallpaperAPIConfBuilder {
         WallpaperAPIConfBuilder {
             query: "".to_string(),
             min_resolution: Resolution { w: 1920, h: 1080 },
-            categories: "".to_string(),
+            categories: None,
             purity: Purity::Sfw,
-            api_key: "".to_string(),
+            api_key: None,
         }
     }
 
@@ -53,9 +55,9 @@ impl WallpaperAPIConfBuilder {
         }
     }
 
-    pub fn categories(self, p: String) -> Self {
+    pub fn categories(self, c: Option<String>) -> Self {
         Self {
-            categories: p,
+            categories: c,
             ..self
         }
     }
@@ -64,8 +66,11 @@ impl WallpaperAPIConfBuilder {
         Self { purity: p, ..self }
     }
 
-    pub fn api_key(self, p: String) -> Self {
-        Self { api_key: p, ..self }
+    pub fn api_key(self, api_key: Option<String>) -> Self {
+        Self {
+            api_key: api_key,
+            ..self
+        }
     }
 
     pub fn build(self) -> WallpaperAPIConf {

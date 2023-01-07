@@ -1,6 +1,9 @@
 use std::{error::Error, thread, time::Duration};
 
-use crate::config_manager::get_random_query;
+use crate::{
+    api::wallpaper_api_config::{Resolution, WallpaperAPIConfBuilder},
+    config_manager::get_random_query,
+};
 mod api;
 mod config_manager;
 
@@ -13,16 +16,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
     loop {
         //For choosing a random query and tags
         let query = get_random_query(&config);
-
         let wallpaper_url = api::get_wallpaper_url(
-            api::wallpaper_api_config::WallpaperAPIConfBuilder::new()
+            WallpaperAPIConfBuilder::new()
                 .query(query.query.to_owned())
-                .categories(query.categories.to_owned())
-                .min_resolution(api::wallpaper_api_config::Resolution {
+                .categories(query.categories)
+                .min_resolution(Resolution {
                     w: config.min_resolution.w as i32,
                     h: config.min_resolution.h as i32,
                 })
-                .api_key(config.api_key.clone().unwrap_or_default())
+                .api_key(config.api_key.clone())
                 .purity(config.purity)
                 .build(),
         );

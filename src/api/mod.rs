@@ -19,22 +19,29 @@ pub fn get_wallpaper_url(
         Purity::Any => "111",
     };
 
-    let mut url_parrams = vec![];
-    url_parrams.push(("q", args.query.as_str()));
+    let mut url_params: Vec<(&str, Option<&str>)> = vec![];
+    url_params.push(("q", Some(args.query.as_str())));
     //Make sure that there is something in categories
-    if !args.categories.is_empty() {
-        url_parrams.push(("categories", &args.categories));
+    if let Some(categories) = &args.categories {
+        url_params.push(("categories", Some(categories)));
     }
     let resolution = format!("{}x{}", &args.min_resolution.w, &args.min_resolution.h);
-    url_parrams.push(("atleast", &resolution));
-    url_parrams.push(("purity", purity));
-    url_parrams.push(("apikey", &args.api_key));
+    url_params.push(("atleast", Some(&resolution)));
+    url_params.push(("purity", Some(purity)));
+    let binding = args.api_key.unwrap();
+    url_params.push(("apikey", Some(&binding)));
     //Make it random so we dont always get the same wallpaper
+    url_params.push(("sorting", Some("random")));
 
-    url_parrams.push(("sorting", "random"));
+    let mut final_url_params: Vec<(&str, &str)> = vec![];
 
-    let url = Url::parse_with_params(base_url, url_parrams);
+    for (key, value) in url_params {
+        if let Some(v) = value {
+            final_url_params.push((key, v));
+        }
+    }
 
+    let url = Url::parse_with_params(base_url, final_url_params);
     return if let Ok(url) = url {
         Ok(url.to_string())
     } else {

@@ -6,15 +6,17 @@
 # api_key: u7U2BeUbZdaQ6yh6rW5PAZdWbyOUwLCi
 #The options are Sfw, Sketchy, SketchyAndSfw, Nsfw, and Any. Note: only SFW works without a apiKey
 purity: Sfw
-#Dont set it lower than 2 seconds
+#This is in seconds. Dont set it lower than 2 seconds
 new_picture_delay: 10
 #Format num1 num2, for example : 1920 1080
 min_resolution:
   w: 1920
   h: 1080
-#An array of all the possibly querys,
-query_data: 
+#An array of all the possibly querys.
+#categories is not needed, and does not always work properly. This is out of our hands.
+#Sometimes commenting out categories can increase accuracy
+query_data:
   - query: dogs
-    categories: 
+    # categories:
   - query: cats
-    categories: 
+    # categories:
